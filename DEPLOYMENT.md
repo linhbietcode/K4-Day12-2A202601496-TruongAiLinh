@@ -10,17 +10,17 @@
 
 | Mục | Nội dung |
 |-----|----------|
-| Họ và tên | (điền họ tên) |
-| Mã học viên | (điền mã học viên) |
-| Repo | (điền link repo K4-DAY12-...) |
+| Họ và tên | Trương Ái Linh |
+| Mã học viên | 2A202601496 |
+| Repo | https://github.com/linhbietcode/K4-Day12-2A202601496-TruongAiLinh |
 
 ## Service
 
 | Mục | Nội dung |
 |-----|----------|
-| Public URL | https://TODO-thay-bang-url-that.up.railway.app |
-| Platform | Railway / Render / Cloud Run — (điền platform bạn dùng) |
-| Ngày deploy | (điền ngày) |
+| Public URL | https://day12-chat-c16g.onrender.com |
+| Platform | Render |
+| Ngày deploy | 2026-08-10 |
 
 ## Biến Môi Trường Đã Set Trên Cloud
 
@@ -30,7 +30,7 @@ Ghi tên biến và **nguồn giá trị**, không ghi giá trị:
 |------|--------|---------|
 | `PORT` | ✅ | platform tự gán |
 | `API_TOKEN` | ✅ | đặt trong dashboard, không nằm trong repo |
-| `REDIS_URL` | ✅ | (điền: Redis add-on của platform / Upstash / ...) |
+| `REDIS_URL` | ✅ | Render Key Value `day12-chat-redis` |
 | `BUCKET_CAPACITY` | ✅ | 10 |
 | `REFILL_PER_MINUTE` | ✅ | 10 |
 | `DAILY_BUDGET_USD` | ✅ | 1.0 |
@@ -74,7 +74,26 @@ done; echo
 Dán output của các lệnh trên vào đây:
 
 ```
-(điền output)
+GET /healthz
+HTTP 200
+{"status":"ok","service":"day12-chat-service","version":"1.0.0"}
+
+GET /readyz
+HTTP 200
+{"status":"ready","redis":true}
+
+POST /chat (không có token)
+HTTP 401
+WWW-Authenticate: Bearer
+
+POST /chat (có Bearer token, client `sv-cp5-proof`)
+HTTP 200
+client_id=sv-cp5-proof
+turns_before=0
+
+POST /chat lần hai (cùng client)
+HTTP 200
+turns_before=2
 ```
 
 ## Ảnh Chụp Màn Hình
@@ -86,17 +105,6 @@ Dán output của các lệnh trên vào đây:
 
 ---
 
-## Nếu Dùng Phương Án Dự Phòng
+## Phương Án Deploy
 
-Không đăng ký được tài khoản cloud? Vẫn nộp được bài, nhưng CP5 tối đa 60% điểm:
-
-1. Đặt `LOCAL_FALLBACK=true` trong `.env`
-2. Chạy `docker compose up -d` rồi kiểm tra `docker compose ps`
-3. Chụp màn hình vào `screenshots/`
-4. Chạy `pytest tests/test_cp5.py -v` — bộ test sẽ tự chuyển sang kiểm tra
-   `http://localhost:8000`
-5. Ghi rõ lý do không deploy được vào phần dưới đây:
-
-```
-(điền lý do nếu dùng phương án dự phòng, ngược lại xóa mục này)
-```
+Đã deploy trực tiếp lên Render, không sử dụng phương án dự phòng local.
